@@ -1,42 +1,36 @@
-import './styles.css';
-import Header from '../../components/Header';
-import TeacherCard from '../../components/TeacherCard';
-import api from '../../services/api';
-import { useEffect, useState } from 'react';
-import Teacher from '../../types/Teacher';
-
+import { useEffect, useState } from "react";
+import Header from "../../components/Header";
+import TeacherCard from "../../components/TeacherCard";
+import api from "../../services/api";
+import Teacher from "../../types/Teacher";
+import "./styles.css";
 
 function Main() {
+  const [allTeachers, setAllTeachers] = useState<Teacher[]>([]);
 
-  const [allTeachers, setAllTeachers] = useState<Teacher[]>([])
-
-  async function loadTeachers(){
+  async function loadTeachers() {
     try {
-      const response = await api.get('/teachers')
+      const response = await api.get("/teachers");
 
-      setAllTeachers([...response.data])
+      setAllTeachers([...response.data]);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
-  useEffect(()=>{
-loadTeachers()
-  },[])
+  useEffect(() => {
+    loadTeachers();
+  }, []);
 
   return (
-    <div className='container'>
-      <Header/>
+    <div className="container">
+      <Header />
 
-      <div className='main-teachers'>
-        {allTeachers.map((teacher)=> (
-          <TeacherCard 
-          key={teacher.id}
-          teacher={teacher}   />
+      <div className="main-teachers">
+        {allTeachers.map((teacher) => (
+          <TeacherCard key={teacher.id} teacher={teacher} />
         ))}
-
-</div>
-
+      </div>
     </div>
   );
 }
